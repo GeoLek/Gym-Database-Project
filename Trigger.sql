@@ -10,7 +10,7 @@ FOR EACH ROW
 BEGIN
     DECLARE overlap_count INT;
     
-    -- Check for any overlap in class sessions for the same equipment
+    -- Check for any overlap in class sessions for the same equipment and group by EquipmentID
     SELECT COUNT(*) INTO overlap_count
     FROM ClassSession
     WHERE NEW.EquipmentID = EquipmentID
@@ -19,8 +19,10 @@ BEGIN
         OR (NEW.EndTime BETWEEN StartTime AND EndTime)
         OR (StartTime BETWEEN NEW.StartTime AND NEW.EndTime)
         OR (EndTime BETWEEN NEW.StartTime AND NEW.EndTime)
-    );
-    
+    )
+    GROUP BY EquipmentID
+    HAVING COUNT(*) > 1; -- You can adjust the threshold in the HAVING clause as needed
+
     -- If there is an overlap, signal an error
     IF overlap_count > 0 THEN
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Error: Overlapping class session times.';
