@@ -7,7 +7,7 @@ START TRANSACTION;
 INSERT INTO Staff (FullName, ContactNumber, DateOfBirth, HomeAddress, Role, Specialization)
 VALUES ('Chris', '691234', '1990-05-01', 'katoikia', 'trainer', 'Karate instructor');
 
--- Update Gym details
+-- Update Gym details if needed
 UPDATE Gym
 SET OperatingHours = '06:00-22:00'
 WHERE GymID = 1;
